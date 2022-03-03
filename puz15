@@ -1,0 +1,34 @@
+#! /usr/bin/env perl
+
+use warnings;
+use strict;
+
+my @b;
+undef $/;
+$_ = <>;
+my @boards = /define-fun\s+b(\d+).*?#b([01]{15})/gs;
+while (@boards) {
+  my($i,$b) = splice @boards, 0, 2;
+  $b[$i] = $b;
+}
+
+sub print_board {
+  my($b) = @_;
+  $b =~ tr/01/.o/;
+
+  #     1
+  #    1 1
+  #   1 1 1
+  #  1 1 1 1
+  # 1 1 1 1 1
+  my $i = 1;
+  my @b = reverse split //, $b;
+  while (@b) {
+    my $leftpad = " " x (5 - $i);
+    print $leftpad, join(" ", splice @b, 0, $i), "\n";
+    ++$i;
+  }
+  print "\n";
+}
+
+print_board $_ for @b;
